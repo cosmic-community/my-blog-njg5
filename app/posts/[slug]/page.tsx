@@ -17,7 +17,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     notFound()
   }
 
-  const tags = post.metadata?.tags ? post.metadata.tags.split(',').map(t => t.trim()) : []
+  // Changed: Handle tags as array (from Cosmic CMS) instead of comma-separated string
+  const tags = post.metadata?.tags 
+    ? Array.isArray(post.metadata.tags) 
+      ? post.metadata.tags 
+      : post.metadata.tags.toString().split(',').map(t => t.trim())
+    : []
 
   return (
     <article className="min-h-screen">
